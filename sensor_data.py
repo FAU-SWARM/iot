@@ -1,10 +1,32 @@
+import json
 import sys
+import os
 import time
 from datetime import datetime
 import Adafruit_DHT
 import requests
 import smbus
 
+ID_FILE = os.path.expanduser('~/device_id_file')
+print(ID_FILE)
+if os.path.isfile(ID_FILE):
+    print('hi')
+    with open(ID_FILE) as r:
+        id = r.read()
+else:
+    print('hi2')
+    r = requests.post('http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0/device', json =
+    { 'name': 'Raspberry Pi-J' + str(datetime.now()),
+    'meta_data': { 'one': 'key' }  
+    })
+    with open(ID_FILE, 'w') as w:
+        print('hi3')
+        print(vars(r))
+        var = json.loads(r.text)
+        id = var['data']['_id']
+        w.write(id)
+
+print(id)
 
 # Parse command line parameters.
 sensor_args = { '11': Adafruit_DHT.DHT11,
@@ -51,10 +73,6 @@ bus.write_i2c_block_data(addr, als_WH, interrupt_high)
 bus.write_i2c_block_data(addr, als_WL, interrupt_low)
 bus.write_i2c_block_data(addr, pow_sav, power_save_mode)
 
-
-
-
-
 def get_time():
     now = datetime.now()
     year = now.strftime("%Y")
@@ -74,19 +92,20 @@ def post_request(sensor_reading, sensor_type, route):
 #            print(response.json())
 
 while True:
-    time.sleep(.04)
     humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
 
     temperature = temperature * 9/5.0 + 32 # Convert to farhenheit
 
     if temperature is not None:
+        pass
         #print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
-        post_request(sensor_reading=temperature, sensor_type='Temperature', route='/temperature')
+        #post_request(sensor_reading=temperature, sensor_type='Temperature', route='/temperature')
     else:
         print('Failed to get reading. Try again!')
-    
+
     if humidity is not None:
-        post_request(sensor_reading=humidity, sensor_type='Humidity', route='/humidity')
+        pass
+        #post_request(sensor_reading=humidity, sensor_type='Humidity', route='/humidity')
     else:
         print('Failed to get reading. Try again!')
         # sys.exit(1)
@@ -100,6 +119,17 @@ while True:
 
     lux_val = word * gain
     lux_val = round(lux_val,1) #Round value for presentation
-    post_request(sensor_reading=lux_val, sensor_type='Lux', route='/lux')
+    #post_request(sensor_reading=lux_val, sensor_type='Lux', route='/lux')
     
-    time.sleep(.96)
+    raw = { 'Temperature': temperature,
+            'Humidity': humidity,
+            'Lux': lux_val,
+            'Date': get_time()
+            }
+            
+    post_body = { 'raw': raw,
+                'device': id }
+    r = requests.post('http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0/raw_data', 
+                        json = post_body)
+    print(r.status_code == 200)
+    time.sleep(1)
