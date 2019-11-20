@@ -10,17 +10,14 @@ import smbus
 ID_FILE = os.path.expanduser('~/device_id_file')
 print(ID_FILE)
 if os.path.isfile(ID_FILE):
-    print('hi')
     with open(ID_FILE) as r:
         id = r.read()
 else:
-    print('hi2')
     r = requests.post('http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0/device', json =
     { 'name': 'Raspberry Pi-J' + str(datetime.now()),
     'meta_data': { 'one': 'key' }  
     })
     with open(ID_FILE, 'w') as w:
-        print('hi3')
         print(vars(r))
         var = json.loads(r.text)
         id = var['data']['_id']
@@ -95,20 +92,6 @@ while True:
     humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
 
     temperature = temperature * 9/5.0 + 32 # Convert to farhenheit
-
-    if temperature is not None:
-        pass
-        #print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
-        #post_request(sensor_reading=temperature, sensor_type='Temperature', route='/temperature')
-    else:
-        print('Failed to get reading. Try again!')
-
-    if humidity is not None:
-        pass
-        #post_request(sensor_reading=humidity, sensor_type='Humidity', route='/humidity')
-    else:
-        print('Failed to get reading. Try again!')
-        # sys.exit(1)
     
     # Reading lux (luminosity)
     word = bus.read_word_data(addr,als)
@@ -120,7 +103,7 @@ while True:
     lux_val = word * gain
     lux_val = round(lux_val,1) #Round value for presentation
     #post_request(sensor_reading=lux_val, sensor_type='Lux', route='/lux')
-    
+    print(temperature, humidity, lux_val)
     raw = { 'Temperature': temperature,
             'Humidity': humidity,
             'Lux': lux_val,
