@@ -7,13 +7,17 @@ import iotlib
 
 
 def main(args):
+    print(vars(args))
+
     DEVICE_ID_FILE = os.path.join(args.cache, 'device')
     PROJECT_ID_FILE = os.path.join(args.cache, 'project')
 
     device_id = iotlib.get_device_id(
-        args.endpoint + '/device', args.device, args.project, DEVICE_ID_FILE
+        args.endpoint + '/device', args.device, args.project, DEVICE_ID_FILE, proxies=args.proxy
     )
-    project_id = iotlib.get_project_id(args.endpoint + '/project', args.project, PROJECT_ID_FILE)
+    project_id = iotlib.get_project_id(
+        args.endpoint + '/project', args.project, PROJECT_ID_FILE, proxies=args.proxy
+    )
 
     print(
         'device: <"{}"/{}>; project: <"{}"/{}>;'.format(
@@ -23,11 +27,12 @@ def main(args):
     then = datetime.datetime.now()
     while True:
         try:
-            success = iotlib.get_ping(args.endpoint + '/ping') and \
-                iotlib.post_random_data(args.endpoint + '/raw_data', device_id, project_id)
+            success = iotlib.get_ping(args.endpoint + '/ping', proxies=args.proxy) and \
+                iotlib.post_random_data(args.endpoint + '/raw_data', device_id, project_id, proxies=args.proxy)
             print(
                 'device: <"{}"/{}>; project: <"{}"/{}>; success: {}; uptime: <{}>'.format(
-                    args.device, device_id, args.project, project_id, success, datetime.datetime.now() - then
+                    args.device, device_id, args.project, project_id, success,
+                    datetime.datetime.now() - then
                 )
             )
             time.sleep(args.sample)
@@ -71,11 +76,30 @@ if __name__ == "__main__":
         type=str,
         default='http://localhost:6969/api/v0',
     )
+    parser.add_argument(
+        '-x',
+        '--proxy',
+        help='The API that\'s dealing with all of this data.',
+        nargs='+',
+        type=str,
+    )
 
     args = parser.parse_args()
 
     args.cache = os.path.abspath(os.path.expanduser(args.cache))
     if not os.path.isdir(args.cache):
         os.makedirs(args.cache)
+    if len(args.proxy) > 0:
+        if len(args.proxy) == 1:
+            args.proxy = {
+                'http': args.proxy[0],
+            }
+        elif len(args.proxy) == 2:
+            args.proxy = {
+                'http': args.proxy[0],
+                'https': args.proxy[1],
+            }
+    else:
+        args.proxy = None
 
     main(args)
