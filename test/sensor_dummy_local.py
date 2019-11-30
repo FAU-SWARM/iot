@@ -34,16 +34,6 @@ for project in body['data']:
 
 print('device_id: <{}>; project_id: <{}>'.format(id, project_id))
 
-
-def get_time():
-    now = datetime.now()
-    year = now.strftime("%Y")
-    month = now.strftime("%m")
-    day = now.strftime("%d")
-    time = now.strftime("%H:%M:%S")
-    return month + '/' + day + '/' + year + ', ' + time
-
-
 period = 1
 if len(sys.argv) > 1:
     period = int(sys.argv[1])
@@ -52,10 +42,10 @@ if len(sys.argv) > 1:
 while True:
 
     raw = {
-        'Temperature': random.randint(0, 69),
-        'Humidity': random.randint(0, 69),
-        'Lux': random.randint(0, 69),
-        'Date': get_time()
+        'Temperature': random.randint(0, 69696969),
+        'Humidity': random.randint(0, 69696969),
+        'Lux': random.randint(0, 69696969),
+        'Date': str(datetime.now()),
     }
 
     post_body = {'raw': raw, 'device': id, 'project': project_id}
