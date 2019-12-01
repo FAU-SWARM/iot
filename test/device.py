@@ -89,7 +89,7 @@ if __name__ == "__main__":
     args.cache = os.path.abspath(os.path.expanduser(args.cache))
     if not os.path.isdir(args.cache):
         os.makedirs(args.cache)
-    if len(args.proxy) > 0:
+    if args.proxy is not None and len(args.proxy) > 0:
         if len(args.proxy) == 1:
             args.proxy = {
                 'http': args.proxy[0],
