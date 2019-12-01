@@ -14,7 +14,7 @@ def main(args):
     PROJECT_ID_FILE = os.path.join(args.cache, 'project')
 
     device_id = iotlib.get_device_id(
-        args.endpoint + '/device', args.device, args.project, DEVICE_ID_FILE, proxies=args.proxy, random=True
+        args.endpoint + '/device', args.device, args.project, DEVICE_ID_FILE, proxies=args.proxy, metadata=dict(random=True)
     )
     project_id = iotlib.get_project_id(
         args.endpoint + '/project', args.project, PROJECT_ID_FILE, proxies=args.proxy
