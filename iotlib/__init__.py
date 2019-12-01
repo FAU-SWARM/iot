@@ -73,3 +73,13 @@ def post_random_data(uri, device_id, project_id, proxies=None):
         r = requests.post(uri, json=post_body)
 
     return r.status_code == 200
+
+
+def post_data(uri, device_id, project_id, data, proxies=None):
+    post_body = {'raw': data, 'device': device_id, 'project': project_id}
+    if proxies is not None:
+        r = requests.post(uri, json=post_body, proxies=proxies)
+    else:
+        r = requests.post(uri, json=post_body)
+
+    return r.status_code == 200
