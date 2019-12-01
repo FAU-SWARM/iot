@@ -14,15 +14,16 @@ def get_ping(uri, proxies=None):
     return r.status_code == 200 and var['data'] == 'pong'
 
 
-def get_device_id(uri, device_name, project_name, filename, proxies=None):
+def get_device_id(uri, device_name, project_name, filename, proxies=None, metadata=dict()):
+    metadata['project'] = project_name
     if os.path.isfile(filename):
         with open(filename) as r:
             device_id = r.read()
     else:
         if proxies is not None:
-            r = requests.post(uri, json={'name': device_name, 'meta_data': {'project': project_name, }}, proxies=proxies)
+            r = requests.post(uri, json={'name': device_name, 'meta_data': metadata}, proxies=proxies)
         else:
-            r = requests.post(uri, json={'name': device_name, 'meta_data': {'project': project_name, }})
+            r = requests.post(uri, json={'name': device_name, 'meta_data': metadata})
         with open(filename, 'w') as w:
             var = r.json()
             device_id = var['data']['_id']
