@@ -61,9 +61,9 @@ def get_project_id(uri, project_name, filename, proxies=None):
 
 def post_random_data(uri, device_id, project_id, proxies=None):
     raw = {
-        'Temperature': random.randint(0, 69696969),
-        'Humidity': random.randint(0, 69696969),
-        'Lux': random.randint(0, 69696969),
+        'Temperature': random.randint(0, 69),
+        'Humidity': random.randint(69, 6969),
+        'Lux': random.randint(6969, 69696969),
         'Date': str(datetime.datetime.now()),
     }
 
