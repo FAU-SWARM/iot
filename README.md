@@ -35,6 +35,6 @@ python iot/test/device.py --cache /var/log/iot/local/1 --device device1 --projec
 
 
 # production api / website
-python iot/test/device.py --cache /var/log/iot/remote/0 --device device0 --endpoint http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0 --project example
-python iot/test/device.py --cache /var/log/iot/remote/1 --device device1 --endpoint http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0 --project alternate-example
+python iot/test/device.py --cache /var/log/iot/remote/0 --device device-0 --endpoint http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0 --project example
+python iot/test/device.py --cache /var/log/iot/remote/1 --device device-1 --endpoint http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0 --project alternate-example
 ```
