@@ -28,10 +28,13 @@ Now go to (SWARM)[http://swarm-fau4214.eastus.cloudapp.azure.com/data/raw/graph]
 
 
 # Scripts
-```batch
-python iot\test\device.py --cache /var/log/iot/local/0 --device rpi-dummy0
-python iot\test\device.py --cache /var/log/iot/local/1 --device rpi-dummy1 --project not-swarm
+```bash
+# development localhost api / website
+python iot/test/device.py --cache /var/log/iot/local/0 --device device0 --project example
+python iot/test/device.py --cache /var/log/iot/local/1 --device device1 --project alternate-example
 
-python iot\test\device.py --cache /var/log/iot/remote/2 --device rpi-dummy2 --endpoint http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0
-python iot\test\device.py --cache /var/log/iot/remote/3 --device rpi-dummy3 --endpoint http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0 --project not-swarm
+
+# production api / website
+python iot/test/device.py --cache /var/log/iot/remote/0 --device device0 --endpoint http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0 --project example
+python iot/test/device.py --cache /var/log/iot/remote/1 --device device1 --endpoint http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0 --project alternate-example
 ```
