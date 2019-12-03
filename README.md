@@ -2,13 +2,24 @@
 IOT for the SWARM project
 
 
-# Installation
-```batch
+# Installation for a Raspberry Pi (no sudo)
+Use this option if your Raspberry Pi code does **NOT** need `sudo` to run. In this example we're using Python 2.
+```bash
 cd some-folder
 git clone iot
 cd iot
-:: this will install iot inside of your Python
+# this will install iot inside of your Python
 python -m pip install .
+```
+
+# Installation for a Raspberry Pi (sudo) [Python 3]
+Use this option if your Raspberry Pi code **does** need `sudo` to run. Please be careful. In this example we're using Python 3.
+```bash
+cd some-folder
+git clone iot
+cd iot
+# this will install iot inside of your Python
+sudo python3 -m pip install .
 ```
 
 # Example Code
@@ -30,11 +41,11 @@ Now go to (SWARM)[http://swarm-fau4214.eastus.cloudapp.azure.com/data/raw/graph]
 # Scripts
 ```bash
 # development localhost api / website
-python iot/test/device.py --cache /var/log/iot/local/0 --device device0 --project example
-python iot/test/device.py --cache /var/log/iot/local/1 --device device1 --project alternate-example
+python iot/test/device.py --cache /var/log/iot/local/0 --device device0 --sample 5 --project example
+python iot/test/device.py --cache /var/log/iot/local/1 --device device1 --sample 5  --project alternate-example
 
 
 # production api / website
-python iot/test/device.py --cache /var/log/iot/remote/0 --device device-0 --endpoint http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0 --project example
-python iot/test/device.py --cache /var/log/iot/remote/1 --device device-1 --endpoint http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0 --project alternate-example
+python iot/test/device.py --cache /var/log/iot/remo/0 --device device-0 --sample 5  --endpoint http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0 --project example
+python iot/test/device.py --cache /var/log/iot/remo/1 --device device-1 --sample 5  --endpoint http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0 --project alternate-example
 ```
