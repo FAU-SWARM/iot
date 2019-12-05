@@ -16,6 +16,8 @@ def get_ping(uri, proxies=None):
 
 def get_device_id(uri, device_name, project_name, filename, proxies=None, metadata=dict()):
     metadata['project'] = project_name
+    if not os.path.isdir(os.path.dirname(filename)):
+        os.makedirs(os.path.dirname(filename))
     if os.path.isfile(filename):
         with open(filename) as r:
             device_id = r.read()
@@ -33,6 +35,8 @@ def get_device_id(uri, device_name, project_name, filename, proxies=None, metada
 
 def get_project_id(uri, project_name, filename, proxies=None):
     project_id = None
+    if not os.path.isdir(os.path.dirname(filename)):
+        os.makedirs(os.path.dirname(filename))
     if os.path.isfile(filename):
         with open(filename) as r:
             project_id = r.read()
@@ -61,10 +65,9 @@ def get_project_id(uri, project_name, filename, proxies=None):
 
 def post_random_data(uri, device_id, project_id, proxies=None):
     raw = {
-        'Temperature': random.randint(0, 69),
-        'Humidity': random.randint(69, 6969),
-        'Lux': random.randint(6969, 69696969),
-        'Date': str(datetime.datetime.now()),
+        'Temperature': 100 + random.randint(0, 69),
+        'Humidity': 250 + random.randint(0, 69),
+        'Lux': 500 + random.randint(0, 69),
     }
 
     post_body = {'raw': raw, 'device': device_id, 'project': project_id}
@@ -84,3 +87,13 @@ def post_data(uri, device_id, project_id, data, proxies=None):
         r = requests.post(uri, json=post_body)
 
     return r.status_code == 200
+
+
+# https://stackoverflow.com/questions/783897/truncating-floats-in-python
+def truncate(f, n):
+    '''Truncates/pads a float f to n decimal places without rounding'''
+    s = '{}'.format(f)
+    if 'e' in s or 'E' in s:
+        return '{0:.{1}f}'.format(f, n)
+    i, p, d = s.partition('.')
+    return float('.'.join([i, (d+'0'*n)[:n]]))
