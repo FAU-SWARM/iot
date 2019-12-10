@@ -93,13 +93,13 @@ def main(args):
                     datetime.datetime.now() - then
                 )
             )
-            time.sleep(args.sample)
         except KeyboardInterrupt:
             print('ctrl + c detected, cached in {}'.format(args.cache))
             break
         except Exception as e:
             print('encountered an error')
             traceback.format_exc()
+        time.sleep(args.sample)
 
 
 if __name__ == "__main__":
