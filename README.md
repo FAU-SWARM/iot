@@ -27,14 +27,14 @@ sudo python3 -m pip install .
 import time
 import iotlib
 
-device_id = iotlib.get_device_id('http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0/device', 'example-device', 'example', 'example-device-id-file', metadata=dict(testing=True, fake_data=True))
-project_id = iotlib.get_project_id('http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0/project', 'example', 'example-project-id-file')
+device_id = iotlib.get_device_id('http://swarm-fau.eastus.cloudapp.azure.com:6969/api/v0/device', 'example-device', 'example', 'example-device-id-file', metadata=dict(testing=True, fake_data=True))
+project_id = iotlib.get_project_id('http://swarm-fau.eastus.cloudapp.azure.com:6969/api/v0/project', 'example', 'example-project-id-file')
 
 for i in range(0, 100):
-  iotlib.post_data('http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0/raw_data', device_id, project_id, dict(supid=i + 2, hehe=i * 2, lelelele=i * 3 / 2))
+  iotlib.post_data('http://swarm-fau.eastus.cloudapp.azure.com:6969/api/v0/raw_data', device_id, project_id, dict(supid=i + 2, hehe=i * 2, lelelele=i * 3 / 2))
   time.sleep(1)
 ```
-Now go to (SWARM)[http://swarm-fau4214.eastus.cloudapp.azure.com/data/raw/graph] and select your Project or Devices and have a look. You should see a linear graph that looks like this: ![example-graph](./img/example.png)
+Now go to (SWARM)[http://swarm-fau.eastus.cloudapp.azure.com/data/raw/graph] and select your Project or Devices and have a look. You should see a linear graph that looks like this: ![example-graph](./img/example.png)
 
 
 
@@ -46,8 +46,8 @@ python iot/test/device.py --cache /var/log/iot/local/1 --device device1 --sample
 
 
 # production api / website
-python iot/test/device.py --cache /var/log/iot/remo/0 --device device-0 --sample 5  --endpoint http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0 --project example
-python iot/test/device.py --cache /var/log/iot/remo/1 --device device-1 --sample 5  --endpoint http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0 --project alternate-example
+python iot/test/device.py --cache /var/log/iot/remo/0 --device device-0 --sample 5  --endpoint http://swarm-fau.eastus.cloudapp.azure.com:6969/api/v0 --project example
+python iot/test/device.py --cache /var/log/iot/remo/1 --device device-1 --sample 5  --endpoint http://swarm-fau.eastus.cloudapp.azure.com:6969/api/v0 --project alternate-example
 ```
 
 
