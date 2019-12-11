@@ -15,7 +15,7 @@ if os.path.isfile(ID_FILE):
     with open(ID_FILE) as r:
         id = r.read()
 else:
-    r = requests.post('http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0/device',
+    r = requests.post('http://swarm-fau.eastus.cloudapp.azure.com:6969/api/v0/device',
                         json = { 'name': 'Raspberry Pi-' + str(datetime.now()),
                                 'meta_data': { 'type': 'random' }
                                 }
@@ -55,7 +55,7 @@ while True:
 
     post_body = { 'raw': raw,
                 'device': id }
-    r = requests.post('http://swarm-fau4214.eastus.cloudapp.azure.com:6969/api/v0/raw_data',
+    r = requests.post('http://swarm-fau.eastus.cloudapp.azure.com:6969/api/v0/raw_data',
                         json = post_body)
     print(r.status_code == 200)
     time.sleep(60)
